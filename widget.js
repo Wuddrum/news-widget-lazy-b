@@ -14,5 +14,6 @@
             }
         }
         window.addEventListener('scroll', onWindowScroll);
+        onWindowScroll();
     });
 }(window, document, 'NewsWidget');
