@@ -1,11 +1,10 @@
-!function(window, document, widgetId) {
-    window.addEventListener('message', function(e) {
-        var data = e.data;
-        if (!e.origin || e.origin.replace(/^https?:\/\//,'') !== 'wuddrum.github.io' || !+data || data <= 0) return;
-        document.getElementById(widgetId).style.height = data + 'px';
+!function(window, addEventListener, getElementById, widgetId) {
+    addEventListener('message', function(e) {
+        if (e.origin.split('://')[1] !== 'wuddrum.github.io') return;
+        getElementById(widgetId).style.height = e.data + 'px';
     });
-    window.addEventListener('load', function() {
-        var widget = document.getElementById(widgetId);
+    addEventListener('load', function() {
+        var widget = getElementById(widgetId);
         var onWindowScroll = function() {
             var widgetRect = widget.getBoundingClientRect();
             if (widgetRect.right > 0 && widgetRect.left < window.innerWidth && widgetRect.bottom > 0 && widgetRect.top < window.innerHeight) {
@@ -13,7 +12,7 @@
                 widget.contentWindow.postMessage({v:1}, '*');
             }
         }
-        window.addEventListener('scroll', onWindowScroll);
+        addEventListener('scroll', onWindowScroll);
         onWindowScroll();
     });
-}(window, document, 'NewsWidget');
+}(window, window.addEventListener.bind(window), document.getElementById.bind(document), 'NewsWidget');
